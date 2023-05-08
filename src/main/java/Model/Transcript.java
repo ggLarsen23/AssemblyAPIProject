@@ -1,4 +1,4 @@
-package org.example;
+package Model;
 
 public class Transcript {
     private String audio_url;

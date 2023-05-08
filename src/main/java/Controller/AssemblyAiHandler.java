@@ -1,40 +1,43 @@
-package org.example;
+package Controller;
 
+import Constants.AuthorizationKeys;
+import Model.Transcript;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class Main {
-    public static void main(String[] args) throws Exception {
-        System.out.println("Hello world!");
+public class AssemblyAiHandler {
 
-        Transcript transcript = new Transcript();
-        transcript.setAudio_url("https://github.com/johnmarty3/JavaAPITutorial/raw/main/Thirsty.mp4");
+    HttpClient httpClient = HttpClient.newHttpClient();
+    Gson gson = new Gson();
 
-        Gson gson = new Gson();
+    public Transcript assemblyAISendTranscript(Transcript transcript) throws IOException, InterruptedException, URISyntaxException {
+
         String jsonRequest = gson.toJson(transcript);
 
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(new URI("https://api.assemblyai.com/v2/transcript"))
-                .header("Authorization", "9d5864ae89874e689f419b63970c2296")
+                .header("Authorization", AuthorizationKeys.getAssemblyAIKey())
                 .POST(HttpRequest.BodyPublishers.ofString(jsonRequest))
                 .build();
 
-        HttpClient httpClient = HttpClient.newHttpClient();
-
         HttpResponse<String> postResponse = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
+        System.out.println("PostID: " + (String) transcript.getId());
 
-        transcript = gson.fromJson(postResponse.body(), Transcript.class);
+        return gson.fromJson(postResponse.body(), Transcript.class);
 
-        System.out.println(transcript.getId());
+
+    }
+    public Transcript assemblyAIRetrieveTranslation(Transcript transcript) throws URISyntaxException, IOException, InterruptedException {
 
         HttpRequest getRequest = HttpRequest.newBuilder()
                 .uri(new URI("https://api.assemblyai.com/v2/transcript/" + transcript.getId()))
-                .header("Authorization", "9d5864ae89874e689f419b63970c2296")
+                .header("Authorization", AuthorizationKeys.getAssemblyAIKey())
                 .build();
 
         while (true) {
@@ -48,8 +51,7 @@ public class Main {
             }
             Thread.sleep(1000);
         }
-
-        System.out.println("COMPLETED");
-        System.out.println(transcript.getText());
+        System.out.println("TRANSCRIPT RETRIEVED");
+        return transcript;
     }
 }

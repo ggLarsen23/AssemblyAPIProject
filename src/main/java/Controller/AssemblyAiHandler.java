@@ -27,7 +27,7 @@ public class AssemblyAiHandler {
                 .build();
 
         HttpResponse<String> postResponse = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
-        System.out.println("PostID: " + (String) transcript.getId());
+        System.out.println(transcript.getId());
 
         return gson.fromJson(postResponse.body(), Transcript.class);
 

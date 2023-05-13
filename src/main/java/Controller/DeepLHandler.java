@@ -20,15 +20,15 @@ public class DeepLHandler {
 
     public Translation deepLTranslate(Translation translation) throws URISyntaxException, IOException, InterruptedException {
 
-        //String jsonRequest = gson.toJson(translation);
-        String jsonReuqest = "[{\"text\":Hello i am great,\"target_lang\":\"FR\"}]";
+        String jsonRequest = gson.toJson(translation);
+        //String jsonReuqest = "[{\"text\":Hello i am great,\"target_lang\":\"FR\"}]";
 
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(new URI("https://api-free.deepl.com/v2/translate"))
                 .header("Authorization", "DeepL-Auth-Key ".concat(AuthorizationKeys.getDeepLKey()))
-                .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("Content-Type", "application/json")
                 //.header("Content-Length", "37")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonReuqest, StandardCharsets.UTF_8))// jsonRequest.concat("&target_lang=FR")
+                .POST(HttpRequest.BodyPublishers.ofString(jsonRequest, StandardCharsets.UTF_8))// jsonRequest.concat("&target_lang=FR")
                 .build();
 
         HttpResponse<String> postResponse = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());

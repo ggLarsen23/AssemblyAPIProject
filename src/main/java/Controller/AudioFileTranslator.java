@@ -33,6 +33,8 @@ public class AudioFileTranslator {
         translation.setText(transcriptArray);
         translation = deepLHandler.deepLTranslate(translation);
 
+        System.out.println(translation.getText()[0]);
+
         //translation
 
         //System.out.println(transcript.getText());

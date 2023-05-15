@@ -3,6 +3,7 @@ package Controller;
 import Constants.AuthorizationKeys;
 import Model.Transcript;
 import Model.Translation;
+import Model.Translations;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 public class DeepLHandler {
@@ -32,7 +34,9 @@ public class DeepLHandler {
                 .build();
 
         HttpResponse<String> postResponse = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
-        System.out.println(postResponse);
+        Translations translations = gson.fromJson(postResponse.body(), Translations.class);
+        // Wrapper[] data = gson.fromJson(jElement, Wrapper[].class);
+        System.out.println(gson.fromJson(postResponse.body(), Translation[].class)[0].getText()[0]);
         translation = gson.fromJson(postResponse.body(), Translation.class);
 
         return translation;

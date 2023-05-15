@@ -3,7 +3,6 @@ package Model;
 public class Translation {
     private String[] text;
     private String detected_source_language;
-
     private String target_lang;
 
     public String[] getText() {

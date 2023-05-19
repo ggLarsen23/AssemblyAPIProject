@@ -25,6 +25,7 @@ public class AssemblyAiHandler {
                 .header("Authorization", AuthorizationKeys.getAssemblyAIKey())
                 .POST(HttpRequest.BodyPublishers.ofString(jsonRequest))
                 .build();
+        
 
         HttpResponse<String> postResponse = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
         System.out.println(gson.fromJson(postResponse.body(), Transcript.class).getId());
